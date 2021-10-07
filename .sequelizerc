@@ -1,0 +1,14 @@
+// Indicando para o Sequelize CLI onde estao a config para acessar o banco
+// e onde deverao ser criadadas as migrations.
+const path = require('path');
+
+// Uma migration e um arquivo que define 
+// as configs de uma tabela no banco.
+// Use o comando "npm sequelize migration:create --name=nome-da-tabela", do Sequelize CLI,
+// para criar a estrutura inicial da migration.
+
+//Para rodar as migrations o comando e "npm sequelize db:migrate"
+module.exports = {
+    config: path.resolve(__dirname, 'src', 'config', 'database.js'),
+    'migrations-path': path.resolve(__dirname, 'src', 'database', 'migrations'),
+};

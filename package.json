@@ -1,0 +1,19 @@
+{
+  "name": "api_hora_da_pausa",
+  "version": "1.0.0",
+  "description": "Api da aplicacao hora da pausa",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js"
+  },
+  "author": "pedro_de_andrade",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.13",
+    "sequelize": "^6.6.5",
+    "sequelize-cli": "^6.2.0"
+  }
+}
