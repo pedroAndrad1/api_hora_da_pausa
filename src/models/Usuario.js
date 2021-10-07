@@ -34,7 +34,7 @@ class Usuario extends Model {
     }
 
     static associate(models) {
-          
+        this.belongsToMany(models.Exercicio, { foreignKey: 'exercicio_id', through: 'ciclos'})
     }
 
 }

@@ -18,7 +18,7 @@ class Exercicio extends Model{
     }
 
     static associate(models) {
-          
+        this.belongsToMany(models.Usuario, { foreignKey: 'usuario_id', through: 'ciclos'})
     }
 }
 module.exports = Exercicio;
