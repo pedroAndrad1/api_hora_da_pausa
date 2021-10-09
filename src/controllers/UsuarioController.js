@@ -177,5 +177,19 @@ module.exports = {
             token
         })
     },
-    
+    async logoff(req, res){
+        const {id} = req.params;
+        await Usuario.update({
+            is_logged: false
+        }, {where: {id}})
+        .then(result => {
+            res.json({message: "Logoff realizado com sucesso"});
+        })
+        .catch( err =>{
+            console.log('ERRR LOGOFF =>', err);
+            res.status(500).json({
+                message: 'Erro ao realizar logoff'
+            })
+        })
+    }
 }
