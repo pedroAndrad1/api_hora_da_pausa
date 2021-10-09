@@ -1,6 +1,8 @@
 const Usuario = require('../models/Usuario');
 const fs = require('fs');
-
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const authConfig = require('../config/auth.json');
 // formula pra calcular xp para subir de nivel (10 ^ (1 + Level / 20)) * 100
 
 const verificaSeUsuarioNaoExiste = async (id, res) => {
@@ -10,6 +12,12 @@ const verificaSeUsuarioNaoExiste = async (id, res) => {
                 message: 'Usuário não encontrado'
             })
         }
+}
+// O token expira em 24H
+const generateToken = (params = {}) => {
+    return jwt.sign(params, authConfig.secret, {
+        expiresIn: 100800,
+    });
 }
 module.exports = {
     
@@ -68,7 +76,7 @@ module.exports = {
 
         verificaSeUsuarioNaoExiste(id, res);
 
-        Usuario.update({
+        await Usuario.update({
             nome, senha, foto
         }, {where:{id}})
         .then(usuarioAtualizado => {
@@ -87,7 +95,7 @@ module.exports = {
         const {id} = req.params;
         verificaSeUsuarioNaoExiste(id, res);
 
-        Usuario.destroy({where: {id}})
+        await Usuario.destroy({where: {id}})
         .then(result =>{
             res.json({
                 message: 'Usuário deletado com sucesso!'
@@ -99,5 +107,75 @@ module.exports = {
                 message: 'Erro ao deletar usuário!'
             });
         })
-    }
+    },
+    //Retorna todos os usuarios cadastrados
+    async index(req, res) {
+        await Usuario.findAll()
+        .then(result =>{
+            res.json(result)
+        })
+        .catch( err =>{
+            console.log("ERRO =>", err);
+            res.status(500).json({
+                message: 'Erro ao buscar todos os usuarios'
+            })
+        })
+    },
+    //Retorna um usuario pelo id
+    async getUsuarioById(req, res){
+        const {id} = req.params;
+        await Usuario.findOne({where: {id}})
+        .then(result =>{
+            if(!result){
+                res.status(404).json({
+                    message: 'Usuário não encontrado'
+                })
+                return;
+            }
+            
+            res.json(result)
+        })
+        .catch( err =>{
+            console.log("ERRO =>", err);
+            res.status(500).json({
+                message: 'Erro no servidor'
+            })
+        })
+    },
+    // Autenticacao
+    async login(req, res){
+        const {email, senha} = req.body;
+        // Verificando se ha um usuario com esse email
+        const usuario = await Usuario.findOne({where: {email}});
+        if(!usuario){
+            res.status(400).json({
+                message: 'Email ou senha incorretor!'
+            })
+            return;
+        }
+        // Verificando se a senha criptografada bate com a senha ja criptografada no banco
+        if (!bcrypt.compareSync(senha, usuario.senha)) {
+            return res.status(400).send({
+                message: 'E-mail ou senha incorreto!',
+            });
+        }
+        // Se tudo bater, fazer update do status do usuario no banco para logado
+        // e devolver um token.
+        const id = usuario.id;
+        Usuario.update({
+            is_logged: true
+        }, {where: {id}})// Usei o id em vez do email just in case
+        .catch( err =>{
+            console.error("ERRO =>",err)
+        });
+        
+        const token = generateToken({ id });
+
+        res.json({
+            message: 'Usuário logado com sucesso',
+            usuario,
+            token
+        })
+    },
+    
 }
