@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      isLogged:{
+      is_logged:{
         type: Sequelize.BOOLEAN,
         allowNull: true,
       },
@@ -38,7 +38,7 @@ module.exports = {
         allowNull: false
       },
       foto:{
-        type: Sequelize.BLOB,
+        type: Sequelize.BLOB('long'),
         allowNull: true
       },
       doador:{

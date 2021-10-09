@@ -10,7 +10,7 @@ class Usuario extends Model {
                 nome: DataTypes.STRING,
                 senha: DataTypes.STRING,
                 email: DataTypes.STRING,
-                islogged: DataTypes.BOOLEAN,
+                is_logged: DataTypes.BOOLEAN,
                 nivel: DataTypes.INTEGER,
                 xp: DataTypes.INTEGER,
                 xp_para_subir_de_nivel: DataTypes.INTEGER,
