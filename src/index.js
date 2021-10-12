@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 const UsuarioRoutes = require('./routes/UsuarioRoutes');
+const ExercicioRoutes = require('./routes/ExercicioRoutes');
 // Chamando a conexao com o banco de dados
 // isso executa tudo que esta em './database/index'
 require('./database');
@@ -11,6 +12,7 @@ app.use(express.json());
 
 // Definindo as rotas
 app.use(UsuarioRoutes);
+app.use(ExercicioRoutes);
 
 app.get("/", (req, res) => {
     res.send("api_hora_da_pausa funcionando!")

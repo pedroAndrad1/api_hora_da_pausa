@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      tipoExercicio:{
+      tipo_exercicio:{
         type: Sequelize.STRING,
         allowNull: false,
       },

@@ -8,7 +8,7 @@ class Exercicio extends Model{
             {
                 descricao: DataTypes.STRING,
                 xp: DataTypes.INTEGER,
-                tipoExercicio: DataTypes.STRING // olhos ou corpo
+                tipo_exercicio: DataTypes.STRING // olhos ou corpo
 
             }, 
             {   // O sequelize para a conexao 

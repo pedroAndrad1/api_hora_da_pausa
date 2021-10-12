@@ -3,7 +3,7 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const authConfig = require('../config/auth.json');
-// formula pra calcular xp para subir de nivel (10 ^ (1 + Level / 20)) * 100
+
 
 const verificaSeUsuarioNaoExiste = async (id, res) => {
     const usuario = await Usuario.findOne({where: {id}});
@@ -149,14 +149,14 @@ module.exports = {
         const usuario = await Usuario.findOne({where: {email}});
         if(!usuario){
             res.status(400).json({
-                message: 'Email ou senha incorretor!'
+                message: 'Email ou senha incorretos!'
             })
             return;
         }
         // Verificando se a senha criptografada bate com a senha ja criptografada no banco
         if (!bcrypt.compareSync(senha, usuario.senha)) {
             return res.status(400).send({
-                message: 'E-mail ou senha incorreto!',
+                message: 'E-mail ou senha incorretos!',
             });
         }
         // Se tudo bater, fazer update do status do usuario no banco para logado
