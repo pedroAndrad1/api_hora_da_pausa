@@ -1,5 +1,6 @@
 const Usuario = require('../models/Usuario');
 const Exercicio = require('../models/Exercicio');
+const Sequelize = require('sequelize').Sequelize;
 
 const verificaSeUsuarioNaoExiste = async (id, res) => {
     const usuario = await Usuario.findOne({where: {id}});
@@ -32,6 +33,32 @@ module.exports = {
         })
         .catch( err =>{
             console.log("ERRO getExercicio =>", err);
+            res.status(500).json({
+                message: 'Erro ao selecionar exercício!'
+            })
+        });
+    },
+
+    // Retorna um exercicio aleatorio de um tipo
+    async getExercicioByTipo(req, res){
+        const {tipo_exercicio} = req.params;
+
+        if(tipo_exercicio != "olhos" && tipo_exercicio != "corpo" ){
+            res.status(400).json({
+                message: 'Tipo de exercício inválido, tente olhos ou corpo!'
+            })
+        }
+
+        Exercicio.findAll({
+            where:{tipo_exercicio},
+            order: Sequelize.literal('rand()'), 
+            limit: 1
+        })
+        .then(exercicioAleatorio =>{
+            res.json(exercicioAleatorio);
+        })
+        .catch( err =>{
+            console.log("ERRO getExercicioByTipo =>", err);
             res.status(500).json({
                 message: 'Erro ao selecionar exercício!'
             })
