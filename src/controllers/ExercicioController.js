@@ -100,6 +100,7 @@ module.exports = {
         });
     },
     // Realiza um exercicio e atribui a xp dele a um usuario
+    // FUNCTION MUITO GRANDE, NECESSARIO REFATORAR!!!!!!!!!! 
     async realizarExercicio(req, res){
         //Variavel de controle
         let cicloSalvoComSucesso = true;
@@ -130,8 +131,8 @@ module.exports = {
 
         if(cicloSalvoComSucesso == false) return;
 
-        console.log("Usuario =>", usuario);
-        console.log("Exercicio =>", exercicio);
+        // console.log("Usuario =>", usuario);
+        // console.log("Exercicio =>", exercicio);
         // Verificando se o Usuario vai upar ao realizar esse exercicio.
         // Se sim, fazer update do usuario com o level up.
         // Senao, so fazer update com o xp e nova quantidade de exercicios feitos.
@@ -148,10 +149,20 @@ module.exports = {
                 xp_para_subir_de_nivel: novoXpParaSubirDeNivel,
                 quant_exercicios_feitos: novaQuantidadeDeExerciciosFeitos
             } , {where: {id: usuario_id}})
-            .then( result =>{
-                res.json({
-                    levelUp: true,
-                    usuario: result
+            .then( async () =>{
+                // Retornando o usuario atualizado
+                await Usuario.findOne({where: {id: usuario_id}})
+                .then( result =>{
+                    res.json({
+                        levelUp: true,
+                        usuario: result
+                    })
+                })
+                .catch( err =>{
+                    console.log(err);
+                    res.status(500).json({
+                        message: 'Não foi possível realizar o exercício!'
+                    })
                 })
             })
             .catch( err =>{
@@ -168,10 +179,20 @@ module.exports = {
                 xp: novoXp,
                 quant_exercicios_feitos: novaQuantidadeDeExerciciosFeitos
             } , {where: {id: usuario_id}})
-            .then( result =>{
-                res.json({
-                    levelUp: false,
-                    usuario: result
+            .then( async () =>{
+                // Retornando o usuario atualizado
+                await Usuario.findOne({where: {id: usuario_id}})
+                .then( result =>{
+                    res.json({
+                        levelUp: false,
+                        usuario: result
+                    })
+                })
+                .catch( err =>{
+                    console.log(err);
+                    res.status(500).json({
+                        message: 'Não foi possível realizar o exercício!'
+                    })
                 })
             })
             .catch( err =>{
