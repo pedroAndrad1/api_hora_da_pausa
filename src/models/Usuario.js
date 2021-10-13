@@ -29,6 +29,7 @@ class Usuario extends Model {
                         usuario.senha = bcrypt.hashSync(usuario.senha, salt);
                     },
                 },
+                tableName:'usuarios'
             }
         )
     }

@@ -12,7 +12,8 @@ class Exercicio extends Model{
 
             }, 
             {   // O sequelize para a conexao 
-                sequelize
+                sequelize,
+                tableName: 'exercicios'
             }
         )
     }
