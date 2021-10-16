@@ -142,6 +142,28 @@ module.exports = {
             })
         })
     },
+    // Retorna o usuario pelo token (extraindo o id dele no authMidlleware)
+    async getUsuarioByToken(req, res){
+        const id = req.userId;
+        
+        await Usuario.findOne({where: {id}})
+        .then(result =>{
+            if(!result){
+                res.status(404).json({
+                    message: 'Usuário não encontrado'
+                })
+                return;
+            }
+            
+            res.json(result)
+        })
+        .catch( err =>{
+            console.log("ERRO =>", err);
+            res.status(500).json({
+                message: 'Erro no servidor'
+            })
+        })
+    },
     // Autenticacao
     async login(req, res){
         const {email, senha} = req.body;
