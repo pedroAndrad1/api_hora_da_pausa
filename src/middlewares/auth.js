@@ -30,10 +30,9 @@ module.exports = (req, res, next) => {
         // Se nao for, ele e invalido
         if (err) return res.status(401).send({ error: 'Token inválido' });
         
-        // Nao entendi bem, mas parece que isso evita que usuarios ja autenticados
-        // passem pelo middleware
+        // Passa o Id que foi usada para gerar o Token via requisicao
+        // criando esse atributo userId
         req.userId = decoded.id;
-        console.log(decoded.id)
 
         return next();
     });

@@ -4,6 +4,8 @@ const app = express();
 var cors = require('cors');
 const UsuarioRoutes = require('./routes/UsuarioRoutes');
 const ExercicioRoutes = require('./routes/ExercicioRoutes');
+const DoacaoRoutes = require('./routes/DoacaoRoutes');
+
 // Chamando a conexao com o banco de dados
 // isso executa tudo que esta em './database/index'
 require('./database');
@@ -15,6 +17,7 @@ app.use(cors());
 // Definindo as rotas
 app.use(UsuarioRoutes);
 app.use(ExercicioRoutes);
+app.use(DoacaoRoutes);
 
 app.get("/", (req, res) => {
     res.send("api_hora_da_pausa funcionando!")

@@ -64,7 +64,8 @@ module.exports = {
     },
 
     async update(req, res) {
-        const {id, nome, senha} = req.body;
+        const id = req.userId; // vem do auth middleware
+        const {nome, senha} = req.body;
         let foto = '';
         try{
             foto = fs.readFileSync(req.file.path);
@@ -167,6 +168,12 @@ module.exports = {
     // Autenticacao
     async login(req, res){
         const {email, senha} = req.body;
+        if(!email || !senha){
+            res.status(400).json({
+                message: 'Email ou senha incorretos!'
+            })
+            return;
+        }
         // Verificando se ha um usuario com esse email
         const usuario = await Usuario.findOne({where: {email}});
         if(!usuario){
