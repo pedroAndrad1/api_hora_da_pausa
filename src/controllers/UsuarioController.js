@@ -220,5 +220,18 @@ module.exports = {
                 message: 'Erro ao realizar logoff'
             })
         })
+    },
+    async rankingGeralByXp(req, res){
+        await Usuario.findAll(
+        {
+            order:[ ['nivel','DESC'], ['xp','DESC'] ]
+        })
+        .then(result =>{
+            res.json(result)
+        })
+        .catch( err =>{
+            console.log(err);
+            res.status(500).json({message:"Erro interno ao rankear usuários"})
+        })
     }
 }

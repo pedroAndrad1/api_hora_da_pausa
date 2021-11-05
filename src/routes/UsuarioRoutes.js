@@ -17,5 +17,5 @@ router.post("/usuario/update", upload.single('foto'), UsuarioController.update);
 router.delete("/usuario/delete/:id", upload.single('foto'), UsuarioController.delete);
 router.get("/usuario/logoff/:id", UsuarioController.logoff);
 router.get("/usuario/by/token", UsuarioController.getUsuarioByToken);
-
+router.get("/usuario/ranking/rankingGeral", UsuarioController.rankingGeralByXp);
 module.exports = router;
