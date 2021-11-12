@@ -16,7 +16,10 @@ class Usuario extends Model {
                 xp_para_subir_de_nivel: DataTypes.INTEGER,
                 foto: DataTypes.BLOB,
                 doador: DataTypes.BOOLEAN,
-                quant_exercicios_feitos: DataTypes.INTEGER
+                quant_exercicios_feitos: DataTypes.INTEGER,
+                id_doacao_pendente: DataTypes.STRING,
+                is_facebook_acc: DataTypes.BOOLEAN,
+                facebook_foto_url: DataTypes.STRING,
 
             }, 
             {   //O sequelize para a conexao 

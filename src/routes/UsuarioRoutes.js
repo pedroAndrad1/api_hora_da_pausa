@@ -10,6 +10,7 @@ router.post("/usuario/create", UsuarioController.store);
 router.get("/usuario/index", UsuarioController.index);
 router.get("/usuario/:id", UsuarioController.getUsuarioById);
 router.post("/usuario/login", UsuarioController.login);
+router.post("/usuario/login/facebook", UsuarioController.facebookLogin);
 
 router.use(authMiddleware);
 // As rotas abaixo precisam de autenticacao antes

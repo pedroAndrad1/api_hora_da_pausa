@@ -3,6 +3,8 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const authConfig = require('../config/auth.json');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const { v4: uuidv4 } = require('uuid');
 
 
 const verificaSeUsuarioNaoExiste = async (id, res) => {
@@ -233,5 +235,44 @@ module.exports = {
             console.log(err);
             res.status(500).json({message:"Erro interno ao rankear usuários"})
         })
+    },
+    // Se o usuario nao estiver cadastrado, ele sera criado.
+    // Tive muita dificuldade com a api do facebook. Entao a foto nao vai vir junto do login.
+    async facebookLogin(req, res){
+        const {email, nome} = req.body;
+        // Se o usuario nao existir previamente, ele sera criado com os valores passados na
+        // opcao 'default'.
+        // A senha vai ser um UUID, pois por default e necessario uma senha.
+        // Alem disso, isso evita, ou pelo menos reduz drasticamente as chances, de alguem
+        // conseguir logar com email e senha null em uma usuario que foi criado com facebook.
+        try{
+            const [usuario, created] = await Usuario.findOrCreate({
+                where: {email},
+                defaults:{
+                    email,
+                    nome,
+                    senha: uuidv4(),
+                    is_logged: false,
+                    nivel: 1,
+                    xp: 0,
+                    xp_para_subir_de_nivel: Math.round(Math.pow(10, 2/20) * 100 ),
+                    doador: false,
+                    quant_exercicios_feitos: 0
+                }
+            });
+            const id = usuario.dataValues.id;
+            const token = generateToken({ id });
+            res.json({
+                usuario,
+                token
+            });
+        }
+        catch(err){
+            console.log(err);
+            res.status(500).json({message:"Erro interno ao logar!"});
+            return;
+        }
+
+
     }
 }
