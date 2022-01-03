@@ -1,0 +1,5 @@
+const Mensagem = require('../models/Mensagem');
+const express = require('express');
+const router = express.Router();
+
+module.exports = router;
